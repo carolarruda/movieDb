@@ -5,7 +5,7 @@ const Movie = ({ movies, setMovies }) => {
   const [description, setDescription] = useState("");
   const [runtimeMins, setRuntimeMins] = useState("");
   const token = localStorage.getItem("token");
-  console.log(token);
+
 
   const handleTitle = (e) => {
     setTitle(e.target.value);

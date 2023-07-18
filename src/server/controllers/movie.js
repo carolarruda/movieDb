@@ -1,7 +1,10 @@
 const { Prisma } = require("@prisma/client");
 const prisma = require("../utils/prisma");
 
-const getMovies = async (req, res) => {};
+const getMovies = async (req, res) => {
+  const getMovies = await prisma.movie.findMany()
+  return res.send({movies: getMovies})
+};
 const createMovie = async (req, res) => {
   let { title, description, runtimeMins } = req.body;
 

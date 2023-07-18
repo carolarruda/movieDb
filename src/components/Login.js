@@ -1,12 +1,15 @@
-import React,{ useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Context } from "../client/App";
-
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useContext(Context);
 
+  const handleLogout = () => {
+    setLoggedIn(false);
+    localStorage.clear();
+  };
 
   const handleUsername = (e) => {
     setUsername(e.target.value);
@@ -37,7 +40,7 @@ const Login = () => {
         setPassword("");
         setLoggedIn(true);
         localStorage.setItem("token", data.data.token);
-        localStorage.setItem("username", data.data.username)
+        localStorage.setItem("username", data.data.username);
       });
   };
 
@@ -62,6 +65,7 @@ const Login = () => {
           onChange={handlePassword}
         />
         <button type="submit">Login</button>
+        <button onClick={handleLogout}>Logout</button>
       </form>
     </div>
   );
