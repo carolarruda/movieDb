@@ -24,6 +24,7 @@ model Movie {
   title         String      @unique
   description   String
   runtimeMins   Int
+  url           String
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 }

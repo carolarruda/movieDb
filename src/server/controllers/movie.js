@@ -6,7 +6,7 @@ const getMovies = async (req, res) => {
   return res.send({movies: getMovies})
 };
 const createMovie = async (req, res) => {
-  let { title, description, runtimeMins } = req.body;
+  let { title, description, runtimeMins, url } = req.body;
 
   runtimeMins = Number(runtimeMins);
 
@@ -16,6 +16,7 @@ const createMovie = async (req, res) => {
         title,
         description,
         runtimeMins,
+        url
       },
     });
     res.status(201).json({ movie: movie });
