@@ -7,6 +7,9 @@ const LoginUI = ({ setMovies }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useContext(Context);
+  const [status, setStatus] = useState("");
+  const [failed, setFailed] = useState(false);
+  const [wrong, setWrong] = useState(false);
 
   const navigate = useNavigate();
 
@@ -41,19 +44,36 @@ const LoginUI = ({ setMovies }) => {
       body: JSON.stringify(user),
     };
 
-    fetch("http://localhost:4000/user/login", opts)
-      .then((res) => res.json())
-      .then((data) => {
-        setLoggedIn(true);
-        localStorage.setItem("token", data.data.token);
-        localStorage.setItem("username", data.data.username);
-        fetch("http://localhost:4000/movie")
-          .then((res) => res.json())
-          .then((data) => {
-            navigate(`/main`);
-            setMovies(data.movies);
-          });
-      });
+    async function loginUser() {
+      try {
+        const loginResponse = await fetch(
+          "http://localhost:4000/user/login",
+          opts
+        );
+        const data = await loginResponse.json();
+        setStatus(loginResponse.status);
+
+        if (loginResponse.status === 200) {
+          setLoggedIn(true);
+          localStorage.setItem("token", data.data.token);
+          localStorage.setItem("username", data.data.username);
+          const moviesResponse = await fetch("http://localhost:4000/movie");
+          const moviesData = await moviesResponse.json();
+          setMovies(moviesData.movies);
+          navigate(`/main`);
+        } else if (loginResponse.status === 404) {
+          setFailed(true);
+          console.log("Please use register to create a new user");
+        } else if (loginResponse.status === 401) {
+          setWrong(true);
+          setFailed(false);
+        }
+      } catch (error) {
+        console.error("Error occurred during login: ", error);
+      }
+    }
+
+    loginUser();
   };
 
   return (
@@ -87,7 +107,16 @@ const LoginUI = ({ setMovies }) => {
               value={password}
               onChange={handlePassword}
             />
-            <div></div>
+            {failed && (
+              <div className="error">
+                The username you have entered is not associated with an account.
+              </div>
+            )}
+            {!failed && !wrong && <div></div>}
+            {!failed && wrong && (
+              <div className="error">Your password is incorrect</div>
+            )}
+
             <button className="log-but" type="submit">
               LOGIN
             </button>

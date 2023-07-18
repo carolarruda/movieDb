@@ -46,7 +46,6 @@ const logUser = async (req, res) => {
           data: { token: myToken, username: username },
         });
     } else {
-      console.log("Access Denied!");
       return res.status(401).json({ error: "Invalid username or password" });
     }
   }
@@ -54,6 +53,9 @@ const logUser = async (req, res) => {
     bcrypt.compare(password, user.password, function (err, result) {
       hasAccess(result);
     });
+  }
+  else {
+    return res.status(404).json({ error: "User not in system" });
   }
 };
 
