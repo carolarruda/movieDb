@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { Context } from "../client/App";
 
 const MovieList = ({ movies, setMovies }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [runtimeMins, setRuntimeMins] = useState("");
   const [url, setUrl] = useState("");
+  const [loggedIn, setLoggedIn] = useContext(Context);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -28,7 +30,6 @@ const MovieList = ({ movies, setMovies }) => {
     navigate(`/`);
     setLoggedIn(false);
     localStorage.clear();
-
   };
 
   const handleSubmit = (e) => {

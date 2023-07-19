@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../client/App";
 import "./styles/style.css";
 import { useNavigate } from "react-router-dom";
+import { keyframes } from 'styled-components';
 
 const LoginUI = ({ setMovies }) => {
   const [username, setUsername] = useState("");
@@ -10,6 +11,10 @@ const LoginUI = ({ setMovies }) => {
   const [status, setStatus] = useState("");
   const [failed, setFailed] = useState(false);
   const [wrong, setWrong] = useState(false);
+  const [red, setRed] = useState("");
+  const [redTwo, setRedTwo] = useState("");
+  const [shake, setShake] = useState("");
+  const [shakeTwo, setShakeTwo] = useState("");
 
   const navigate = useNavigate();
 
@@ -63,10 +68,18 @@ const LoginUI = ({ setMovies }) => {
           navigate(`/main`);
         } else if (loginResponse.status === 404) {
           setFailed(true);
+          setRed("red");
+          setRedTwo("");
+          setShake("shake 0.2s ease-in-out 0s 2");
+          setShakeTwo("");
           console.log("Please use register to create a new user");
         } else if (loginResponse.status === 401) {
           setWrong(true);
           setFailed(false);
+          setRedTwo("red");
+          setRed("");
+          setShakeTwo("shake 0.2s ease-in-out 0s 2");
+          setShake("");
         }
       } catch (error) {
         console.error("Error occurred during login: ", error);
@@ -91,6 +104,10 @@ const LoginUI = ({ setMovies }) => {
           <form onSubmit={handleSubmit} className="formy">
             <label htmlFor="username">Username</label>
             <input
+             style={{
+              color: `${red}`,
+              animation: `${shake}`,
+            }}
               type="text"
               id="username"
               placeholder="username"
@@ -100,6 +117,10 @@ const LoginUI = ({ setMovies }) => {
             />
             <label htmlFor="password">Password</label>
             <input
+             style={{
+              color: `${redTwo}`,
+              animation: `${shakeTwo}`,
+            }}
               type="password"
               id="password"
               placeholder="password"

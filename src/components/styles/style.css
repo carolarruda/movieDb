@@ -43,8 +43,8 @@
   margin: 50px;
   grid-template-rows: 50px 50px 1fr;
   padding: 40px;
-  position: sticky; 
-  top: 0; 
+  position: sticky;
+  top: 0;
 }
 
 h1 {
@@ -140,8 +140,6 @@ input[type="number"] {
   grid-gap: 20px;
   align-content: start;
   color: #191d3a;
-
-
 }
 
 .griddy {
@@ -202,4 +200,19 @@ input[type="number"] {
   font-size: 13px;
   color: red;
   align-self: center;
+}
+
+@keyframes shake {
+  0% {
+    margin-left: 0rem;
+  }
+  25% {
+    margin-left: 0.5rem;
+  }
+  75% {
+    margin-left: -0.5rem;
+  }
+  100% {
+    margin-left: 0rem;
+  }
 }
