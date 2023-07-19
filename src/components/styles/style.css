@@ -22,10 +22,6 @@
   grid-template-columns: 1fr 1.6fr;
 }
 
-.box-content {
-  /* position: relative;
-  overflow: auto; */
-}
 
 .login-image {
   background-image: url("../images/image.png");

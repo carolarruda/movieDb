@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../client/App";
 import "./styles/style.css";
 import { useNavigate } from "react-router-dom";
-import { keyframes } from 'styled-components';
+import { keyframes } from "styled-components";
 
 const LoginUI = ({ setMovies }) => {
   const [username, setUsername] = useState("");
@@ -62,10 +62,15 @@ const LoginUI = ({ setMovies }) => {
           setLoggedIn(true);
           localStorage.setItem("token", data.data.token);
           localStorage.setItem("username", data.data.username);
-          const moviesResponse = await fetch("http://localhost:4000/movie");
+          localStorage.setItem("userId", data.data.userId);
+
+          let userId = data.data.userId;
+          const moviesResponse = await fetch(
+            `http://localhost:4000/movie/${userId}`
+          );
           const moviesData = await moviesResponse.json();
           setMovies(moviesData.movies);
-          navigate(`/main`);
+          navigate(`/main/${userId}`);
         } else if (loginResponse.status === 404) {
           setFailed(true);
           setRed("red");
@@ -104,10 +109,10 @@ const LoginUI = ({ setMovies }) => {
           <form onSubmit={handleSubmit} className="formy">
             <label htmlFor="username">Username</label>
             <input
-             style={{
-              color: `${red}`,
-              animation: `${shake}`,
-            }}
+              style={{
+                color: `${red}`,
+                animation: `${shake}`,
+              }}
               type="text"
               id="username"
               placeholder="username"
@@ -117,10 +122,10 @@ const LoginUI = ({ setMovies }) => {
             />
             <label htmlFor="password">Password</label>
             <input
-             style={{
-              color: `${redTwo}`,
-              animation: `${shakeTwo}`,
-            }}
+              style={{
+                color: `${redTwo}`,
+                animation: `${shakeTwo}`,
+              }}
               type="password"
               id="password"
               placeholder="password"

@@ -27,7 +27,7 @@ const logUser = async (req, res) => {
   const { username, password } = req.body;
   const user = await prisma.user.findUnique({
     where: { username: username },
-    select: { password: true },
+    select: { password: true, id: true },
   });
   const createToken = (payload, secret) => {
     const token = jwt.sign(payload, secret);
@@ -41,7 +41,7 @@ const logUser = async (req, res) => {
       const myToken = createToken(payload, secret);
       return res.status(200).json({
         status: "success",
-        data: { token: myToken, username: username },
+        data: { token: myToken, userId: user.id },
       });
     } else {
       return res.status(401).json({ error: "Invalid username or password" });

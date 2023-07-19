@@ -14,11 +14,12 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [movies, setMovies] = useState([]);
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId")
 
   useEffect(() => {
     if (token) {
       setLoggedIn(true);
-      fetch("http://localhost:4000/movie")
+      fetch(`http://localhost:4000/movie/${userId}`)
         .then((res) => res.json())
         .then((data) => {
           setMovies(data.movies);
@@ -33,7 +34,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginUI setMovies={setMovies} />} />
           <Route
-            path="/main"
+            path="/main/:id"
             element={
               loggedIn && (
                 <>

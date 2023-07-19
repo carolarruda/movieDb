@@ -55,10 +55,12 @@ const RegisterUI = ({ setMovies }) => {
             setLoggedIn(true);
             localStorage.setItem("token", data.data.token);
             localStorage.setItem("username", data.data.username);
-            fetch("http://localhost:4000/movie")
+            localStorage.setItem("userId", data.data.userId);
+            let userId = data.data.userId
+            fetch(`http://localhost:4000/movie/${userId}`)
               .then((res) => res.json())
               .then((data) => {
-                navigate(`/main`);
+                navigate(`/main/${userId}`);
                 setMovies(data.movies);
               });
           });

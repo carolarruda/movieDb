@@ -9,6 +9,7 @@ const MovieList = ({ movies, setMovies }) => {
   const [url, setUrl] = useState("");
   const [loggedIn, setLoggedIn] = useContext(Context);
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
 
   const handleTitle = (e) => {
@@ -39,6 +40,7 @@ const MovieList = ({ movies, setMovies }) => {
       description,
       runtimeMins,
       url,
+      userId,
     };
     const opts = {
       method: "POST",
@@ -49,7 +51,7 @@ const MovieList = ({ movies, setMovies }) => {
       body: JSON.stringify(newMovie),
     };
 
-    fetch("http://localhost:4000/movie", opts)
+    fetch(`http://localhost:4000/movie`, opts)
       .then((res) => res.json())
       .then((data) => {
         setTitle("");
@@ -57,7 +59,7 @@ const MovieList = ({ movies, setMovies }) => {
         setRuntimeMins("");
         setUrl("");
         setMovies(movies);
-        fetch("http://localhost:4000/movie")
+        fetch(`http://localhost:4000/movie/${userId}`)
           .then((res) => res.json())
           .then((data) => setMovies(data.movies));
       });
