@@ -39,12 +39,10 @@ const logUser = async (req, res) => {
       console.log("Access Granted!");
       const payload = { username, password };
       const myToken = createToken(payload, secret);
-      return res
-        .status(200)
-        .json({
-          status: "success",
-          data: { token: myToken, username: username },
-        });
+      return res.status(200).json({
+        status: "success",
+        data: { token: myToken, username: username },
+      });
     } else {
       return res.status(401).json({ error: "Invalid username or password" });
     }
@@ -53,8 +51,7 @@ const logUser = async (req, res) => {
     bcrypt.compare(password, user.password, function (err, result) {
       hasAccess(result);
     });
-  }
-  else {
+  } else {
     return res.status(404).json({ error: "User not in system" });
   }
 };

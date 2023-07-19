@@ -22,6 +22,11 @@
   grid-template-columns: 1fr 1.6fr;
 }
 
+.box-content {
+  /* position: relative;
+  overflow: auto; */
+}
+
 .login-image {
   background-image: url("../images/image.png");
   background-size: contain;
@@ -37,8 +42,9 @@
   background-color: #ffffff;
   margin: 50px;
   grid-template-rows: 50px 50px 1fr;
-  min-height: fit-content;
   padding: 40px;
+  position: sticky; 
+  top: 0; 
 }
 
 h1 {
@@ -131,14 +137,17 @@ input[type="number"] {
 .movie-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, min-content));
-  grid-gap: 10px;
+  grid-gap: 20px;
   align-content: start;
   color: #191d3a;
+
+
 }
 
 .griddy {
   display: grid;
   grid-template-rows: 50px 50px 1fr;
+  overflow: auto;
 }
 
 .box {
@@ -192,5 +201,5 @@ input[type="number"] {
 .error {
   font-size: 13px;
   color: red;
-align-self: center;
+  align-self: center;
 }
