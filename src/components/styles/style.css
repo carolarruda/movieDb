@@ -16,12 +16,11 @@
 .box-content {
   background-color: #fafafa;
   width: 95vw;
-  height: 80vh;
+  height: 90vh;
   place-self: center;
   display: grid;
   grid-template-columns: 1fr 1.6fr;
 }
-
 
 .login-image {
   background-image: url("../images/image.png");
@@ -41,6 +40,7 @@
   padding: 40px;
   position: sticky;
   top: 0;
+  overflow: auto;
 }
 
 h1 {

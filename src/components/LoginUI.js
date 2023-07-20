@@ -76,17 +76,17 @@ const LoginUI = ({ setMovies }) => {
         } else if (loginResponse.status === 404) {
           setFailed(true);
           setRed("red");
-          setRedTwo("");
+          setRedTwo("red");
           setShake(sk);
-          setShakeTwo("");
+          setShakeTwo(sk);
           console.log("Please use register to create a new user");
         } else if (loginResponse.status === 401) {
           setWrong(true);
           setFailed(false);
           setRedTwo("red");
-          setRed("");
+          setRed("red");
           setShakeTwo(sk);
-          setShake("");
+          setShake(sk);
         }
       } catch (error) {
         console.error("Error occurred during login: ", error);
@@ -142,7 +142,7 @@ const LoginUI = ({ setMovies }) => {
             )}
             {!failed && !wrong && <div></div>}
             {!failed && wrong && (
-              <div className="error">Your password is incorrect</div>
+              <div className="error">You have entered an invalid username or password</div>
             )}
 
             <button className="log-but" type="submit">
