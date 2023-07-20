@@ -24,7 +24,7 @@ const registerUser = async (req, res) => {
       });
       res.status(201).json({ user: user, status: "success" });
     } else {
-      logUser(req, res);
+      return res.status(409).json({ error: "The username is already taken" });
     }
   } catch (e) {
     res.status(500).json({ error: e.message });

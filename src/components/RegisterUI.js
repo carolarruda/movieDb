@@ -1,4 +1,4 @@
-import React, { useState, useContext , useEffect} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../client/App";
 import "./styles/style.css";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,14 @@ const RegisterUI = ({ setMovies }) => {
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState("");
   const [loggedIn, setLoggedIn] = useContext(Context);
+  const [failed, setFailed] = useState(false);
+  const [red, setRed] = useState("");
+  const [shake, setShake] = useState("");
+  const [status, setStatus] = useState("");
+  const [redTwo, setRedTwo] = useState("");
+  const [shakeTwo, setShakeTwo] = useState("");
+
+  const sk = "shake 0.2s ease-in-out 0s 2";
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -44,37 +52,69 @@ const RegisterUI = ({ setMovies }) => {
 
     async function registUser() {
       try {
-        const registerResponse = await fetch("http://localhost:4000/user/register", opts)
+        const registerResponse = await fetch(
+          "http://localhost:4000/user/register",
+          opts
+        );
 
-      }
-      catch{
+        const data = await registerResponse.json();
+        setStatus(registerResponse.status);
+        if (registerResponse.status === 201) {
+          setUsers(data);
+          async function loginUser() {
+            try {
+              const loginResponse = await fetch(
+                "http://localhost:4000/user/login",
+                opts
+              );
+              const data = await loginResponse.json();
+              setStatus(loginResponse.status);
 
+              if (loginResponse.status === 200) {
+                setLoggedIn(true);
+                localStorage.setItem("token", data.data.token);
+                localStorage.setItem("username", data.data.username);
+                localStorage.setItem("userId", data.data.userId);
+
+                let userId = data.data.userId;
+                const moviesResponse = await fetch(
+                  `http://localhost:4000/movie/${userId}`
+                );
+                const moviesData = await moviesResponse.json();
+                setMovies(moviesData.movies);
+                navigate(`/main/${userId}`);
+              } else if (loginResponse.status === 404) {
+                setFailed(true);
+                setRed("red");
+                setRedTwo("");
+                setShake(sk);
+                setShakeTwo("");
+                console.log("Please use register to create a new user");
+              } else if (loginResponse.status === 401) {
+                setWrong(true);
+                setFailed(false);
+                setRedTwo("red");
+                setRed("");
+                setShakeTwo(sk);
+                setShake("");
+              }
+            } catch (error) {
+              console.error("Error occurred during login: ", error);
+            }
+          }
+
+          loginUser();
+        } else if (registerResponse.status === 409) {
+          setFailed(true);
+          setRed("red");
+          setShake(sk);
+          console.log("Please choose a different username");
+        }
+      } catch (error) {
+        console.error("Error occurred during register: ", error);
       }
     }
-
-    fetch("http://localhost:4000/user/register", opts)
-      .then((res) => res.json())
-      .then(() => {
-        setUsers(users);
-        fetch("http://localhost:4000/user/register")
-          .then((res) => res.json())
-          .then((data) => setUsers(data));
-        fetch("http://localhost:4000/user/login", opts)
-          .then((res) => res.json())
-          .then((data) => {
-            setLoggedIn(true);
-            localStorage.setItem("token", data.data.token);
-            localStorage.setItem("username", data.data.username);
-            localStorage.setItem("userId", data.data.userId);
-            let userId = data.data.userId
-            fetch(`http://localhost:4000/movie/${userId}`)
-              .then((res) => res.json())
-              .then((data) => {
-                navigate(`/main/${userId}`);
-                setMovies(data.movies);
-              });
-          });
-      });
+    registUser();
   };
 
   return (
@@ -92,6 +132,10 @@ const RegisterUI = ({ setMovies }) => {
           <form onSubmit={handleSubmit} className="formy">
             <label htmlFor="username">Username</label>
             <input
+              style={{
+                color: `${red}`,
+                animation: `${shake}`,
+              }}
               type="text"
               id="username"
               placeholder="username"
@@ -108,7 +152,12 @@ const RegisterUI = ({ setMovies }) => {
               value={password}
               onChange={handlePassword}
             />
-            <div></div>
+            {failed && (
+              <div className="error">
+                This username is already taken. Please choose another name.
+              </div>
+            )}
+            {!failed && <div className="error"></div>}
             <button className="log-but" type="submit">
               REGISTER
             </button>
