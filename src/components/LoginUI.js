@@ -16,6 +16,8 @@ const LoginUI = ({ setMovies }) => {
   const [shake, setShake] = useState("");
   const [shakeTwo, setShakeTwo] = useState("");
 
+  const sk = "shake 0.2s ease-in-out 0s 2";
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -75,7 +77,7 @@ const LoginUI = ({ setMovies }) => {
           setFailed(true);
           setRed("red");
           setRedTwo("");
-          setShake("shake 0.2s ease-in-out 0s 2");
+          setShake(sk);
           setShakeTwo("");
           console.log("Please use register to create a new user");
         } else if (loginResponse.status === 401) {
@@ -83,7 +85,7 @@ const LoginUI = ({ setMovies }) => {
           setFailed(false);
           setRedTwo("red");
           setRed("");
-          setShakeTwo("shake 0.2s ease-in-out 0s 2");
+          setShakeTwo(sk);
           setShake("");
         }
       } catch (error) {

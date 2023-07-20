@@ -9,15 +9,23 @@ const saltRounds = 11;
 const getUsers = async (req, res) => {};
 const registerUser = async (req, res) => {
   const { username, password } = req.body;
+  const findUser = await prisma.user.findUnique({
+    where: { username: username },
+  });
+
   const hash = await bcrypt.hash(password, saltRounds);
   try {
-    const user = await prisma.user.create({
-      data: {
-        username: username,
-        password: hash,
-      },
-    });
-    res.status(201).json({ user: user, status: "success" });
+    if (!findUser) {
+      const user = await prisma.user.create({
+        data: {
+          username: username,
+          password: hash,
+        },
+      });
+      res.status(201).json({ user: user, status: "success" });
+    } else {
+      logUser(req, res);
+    }
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -25,6 +33,7 @@ const registerUser = async (req, res) => {
 
 const logUser = async (req, res) => {
   const { username, password } = req.body;
+
   const user = await prisma.user.findUnique({
     where: { username: username },
     select: { password: true, id: true },
@@ -33,6 +42,14 @@ const logUser = async (req, res) => {
     const token = jwt.sign(payload, secret);
     return token;
   };
+
+  if (user) {
+    bcrypt.compare(password, user.password, function (err, result) {
+      hasAccess(result);
+    });
+  } else {
+    return res.status(404).json({ error: "User not in system" });
+  }
 
   function hasAccess(result) {
     if (result) {
@@ -46,13 +63,6 @@ const logUser = async (req, res) => {
     } else {
       return res.status(401).json({ error: "Invalid username or password" });
     }
-  }
-  if (user) {
-    bcrypt.compare(password, user.password, function (err, result) {
-      hasAccess(result);
-    });
-  } else {
-    return res.status(404).json({ error: "User not in system" });
   }
 };
 

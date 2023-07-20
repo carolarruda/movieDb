@@ -42,6 +42,16 @@ const RegisterUI = ({ setMovies }) => {
       body: JSON.stringify(newUser),
     };
 
+    async function registUser() {
+      try {
+        const registerResponse = await fetch("http://localhost:4000/user/register", opts)
+
+      }
+      catch{
+
+      }
+    }
+
     fetch("http://localhost:4000/user/register", opts)
       .then((res) => res.json())
       .then(() => {
