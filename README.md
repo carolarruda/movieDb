@@ -19,7 +19,7 @@ Welcome to the Movie Database project! This application allows users to authenti
 
 ## Demo
 
-To see a live demo of the Movie Database, visit [Demo Link](#https://movie-db-seven-chi.vercel.app/).
+To see a live demo of the Movie Database, visit [Demo Link](https://movie-db-seven-chi.vercel.app/).
 
 ## Features
 
