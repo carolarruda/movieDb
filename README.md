@@ -1,25 +1,36 @@
-# Authentication Challenge
+# Movie Database
 
-## Learning Objectives
+# Movie Database with User Authentication
 
-- Use a token-based approach to authorise access to API resources
-- Use a hashing library to encrypt sensitive information
-- Build a front-end application that interacts with a bearer-auth protected API
+Welcome to the Movie Database project! This application allows users to authenticate and manage their movie collections. Keep track of your favorite movies, discover new ones, and more!
 
-## Introduction
+## Table of Contents
+- [Movie Database](#movie-database)
+- [Movie Database with User Authentication](#movie-database-with-user-authentication)
+  - [Table of Contents](#table-of-contents)
+  - [Demo](#demo)
+  - [Features](#features)
+  - [Setting up](#setting-up)
+  - [Instructions](#instructions)
 
-You are tasked with building a small frontend application containing 3 forms and a list. There is a screenshot at the bottom of this document that gives you an idea of what to aim for. As you'll be able to see, it doesn't have to *look* good so don't spend time on styling!
+## Demo
 
-The flow of the application you build looks like this:
+To see a live demo of the Movie Database, visit [Demo Link](#your-demo-link).
 
-1. A user fills in the register form to create their account with a hashed password
-2. The user fills in the login form to get a bearer token
-3. The user can then create movies once they have a valid token
-4. The list of displayed movies will update as a user creates them
+## Features
+
+- User Authentication:
+  - Register an account
+  - Log in securely
+- Movie Management:
+  - Add movies to your collection
+- User-Friendly Interface:
+  - Intuitive and easy-to-navigate design
+- Secure and Scalable:
+  - Built with security in mind
+  - Ready for scaling to accommodate more users
 
 ## Setting up
-
-Take a little bit of time to familiarise yourself with the project structure - this exercise has both a front-end React app (`src/client/`) *and* a back-end express API (`src/server/`) in it.
 
 1. Fork this repository and clone the fork.
 2. Rename `.env.example` to `.env`
@@ -31,7 +42,3 @@ Take a little bit of time to familiarise yourself with the project structure - t
 ## Instructions
 
 - Run the app with `npm start` - this will open a React app in your browser *and* run the express server. The server will default to port `4000`, you can change this by adding an `API_PORT` variable to your `.env` if you want.
-- Work through each file in the `requirements` directory in numerical order. You can choose whether to work on the Client or Server version of each requirement first, but you may find it easier to do Server first.
-
-## Example solution
-![](./assets/Auth_Challenge.PNG)
