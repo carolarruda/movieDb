@@ -1,5 +1,3 @@
-# Movie Database
-
 # Movie Database with User Authentication
 
 Welcome to the Movie Database project! This application allows users to authenticate and manage their movie collections. Keep track of your favorite movies, discover new ones, and more!
