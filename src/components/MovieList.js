@@ -68,7 +68,7 @@ const MovieList = ({ movies, setMovies }) => {
     <section className="main">
       <div className="box-content">
         <div className="form">
-          <h1>Create Movie</h1>
+          <h1>Add Movie</h1>
           <form onSubmit={handleSubmit} className="formy two">
             <label htmlFor="title">Title</label>
             <input
@@ -105,7 +105,7 @@ const MovieList = ({ movies, setMovies }) => {
             />
             <div></div>
             <button type="submit" className="log-but">
-              Add Movie
+              Add Now
             </button>
           </form>
         </div>
