@@ -4,6 +4,10 @@
 
 Welcome to the Movie Database project! This application allows users to authenticate and manage their movie collections. Keep track of your favorite movies, discover new ones, and more!
 
+![MainPage](https://github.com/carolarruda/movieDb/blob/main/src/components/images/MovieDb.png?raw=true)
+![Login](https://github.com/carolarruda/movieDb/blob/main/src/gifs/login.gif?raw=true)
+![addMovie](https://github.com/carolarruda/movieDb/blob/main/src/gifs/addMovie.gif?raw=true)
+
 ## Table of Contents
 - [Movie Database](#movie-database)
 - [Movie Database with User Authentication](#movie-database-with-user-authentication)
