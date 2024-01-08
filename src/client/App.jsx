@@ -1,4 +1,4 @@
-import LoginUI from "../components/LoginUI";
+import Login from "../components/Login";
 import MovieList from "../components/MovieList";
 import React, { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
@@ -12,17 +12,21 @@ const apiUrl = "http://localhost:4000";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState();
   const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("userId")
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     if (token) {
       setLoggedIn(true);
-      fetch(`http://localhost:4000/movie/${userId}`)
+      fetch(`https://rich-wasp-capris.cyclic.app/movie`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+      })
         .then((res) => res.json())
         .then((data) => {
-          setMovies(data.movies);
+          setMovies(data);
         })
         .catch((error) => console.error("Error fetching movies:", error));
     }
@@ -32,9 +36,9 @@ function App() {
     <Context.Provider value={[loggedIn, setLoggedIn]}>
       <div className="App">
         <Routes>
-          <Route path="/" element={<LoginUI setMovies={setMovies} />} />
+          <Route path="/" element={<Login setMovies={setMovies} />} />
           <Route
-            path="/main/:id"
+            path="/main"
             element={
               loggedIn && (
                 <>
@@ -44,7 +48,7 @@ function App() {
             }
           />
           <Route
-            path="/user/register"
+            path="/register"
             element={<RegisterUI setMovies={setMovies} />}
           />
         </Routes>

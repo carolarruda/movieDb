@@ -3,8 +3,8 @@ import { Context } from "../client/App";
 import "./styles/style.css";
 import { useNavigate } from "react-router-dom";
 
-const RegisterUI = ({ setMovies }) => {
-  const [username, setUsername] = useState("");
+const RegisterUI = ({ setMovies, movies }) => {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState("");
   const [loggedIn, setLoggedIn] = useContext(Context);
@@ -23,8 +23,8 @@ const RegisterUI = ({ setMovies }) => {
     localStorage.clear();
   }, []);
 
-  const handleUsername = (e) => {
-    setUsername(e.target.value);
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
   };
 
   const handlePassword = (e) => {
@@ -39,7 +39,7 @@ const RegisterUI = ({ setMovies }) => {
     e.preventDefault();
 
     const newUser = {
-      username,
+      email,
       password,
     };
     const opts = {
@@ -53,7 +53,7 @@ const RegisterUI = ({ setMovies }) => {
     async function registUser() {
       try {
         const registerResponse = await fetch(
-          "http://localhost:4000/user/register",
+          "https://rich-wasp-capris.cyclic.app/register",
           opts
         );
 
@@ -64,7 +64,7 @@ const RegisterUI = ({ setMovies }) => {
           async function loginUser() {
             try {
               const loginResponse = await fetch(
-                "http://localhost:4000/user/login",
+                "https://rich-wasp-capris.cyclic.app/login",
                 opts
               );
               const data = await loginResponse.json();
@@ -72,17 +72,23 @@ const RegisterUI = ({ setMovies }) => {
 
               if (loginResponse.status === 200) {
                 setLoggedIn(true);
-                localStorage.setItem("token", data.data.token);
-                localStorage.setItem("username", data.data.username);
-                localStorage.setItem("userId", data.data.userId);
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("email", data.user.email);
+                localStorage.setItem("userId", data.user.userId);
 
                 let userId = data.data.userId;
                 const moviesResponse = await fetch(
-                  `http://localhost:4000/movie/${userId}`
+                  `https://rich-wasp-capris.cyclic.app/movie`,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                      "Content-Type": "application/json",
+                    },
+                  }
                 );
                 const moviesData = await moviesResponse.json();
-                setMovies(moviesData.movies);
-                navigate(`/main/${userId}`);
+                setMovies(moviesData);
+                navigate(`/main`);
               } else if (loginResponse.status === 404) {
                 setFailed(true);
                 setRed("red");
@@ -108,7 +114,7 @@ const RegisterUI = ({ setMovies }) => {
           setFailed(true);
           setRed("red");
           setShake(sk);
-          console.log("Please choose a different username");
+          console.log("Please choose a different email");
         }
       } catch (error) {
         console.error("Error occurred during register: ", error);
@@ -130,18 +136,18 @@ const RegisterUI = ({ setMovies }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="formy">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="email">Email</label>
             <input
               style={{
                 color: `${red}`,
                 animation: `${shake}`,
               }}
               type="text"
-              id="username"
-              placeholder="username"
+              id="email"
+              placeholder="email"
               required
-              value={username}
-              onChange={handleUsername}
+              value={email}
+              onChange={handleEmail}
             />
             <label htmlFor="password">Password</label>
             <input
@@ -154,7 +160,7 @@ const RegisterUI = ({ setMovies }) => {
             />
             {failed && (
               <div className="error">
-                This username is already taken. Please choose another name.
+                This email is already taken. Please choose another name.
               </div>
             )}
             {!failed && <div className="error"></div>}

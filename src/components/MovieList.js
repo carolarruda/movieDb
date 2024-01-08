@@ -51,17 +51,22 @@ const MovieList = ({ movies, setMovies }) => {
       body: JSON.stringify(newMovie),
     };
 
-    fetch(`http://localhost:4000/movie`, opts)
+    fetch(`https://rich-wasp-capris.cyclic.app/movie`, opts)
       .then((res) => res.json())
       .then((data) => {
         setTitle("");
         setDescription("");
         setRuntimeMins("");
         setUrl("");
-        setMovies(movies);
-        fetch(`http://localhost:4000/movie/${userId}`)
+        setMovies(data);
+        fetch(`https://rich-wasp-capris.cyclic.app/movie`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        })
           .then((res) => res.json())
-          .then((data) => setMovies(data.movies));
+          .then((data) => setMovies(data));
       });
   };
   return (
@@ -115,7 +120,7 @@ const MovieList = ({ movies, setMovies }) => {
           </div>
           <h1>Movie List</h1>
           <div className="movie-grid">
-            {movies.length > 0 &&
+            {movies &&
               movies.map((movie) => {
                 const style = {
                   backgroundImage: movie.url

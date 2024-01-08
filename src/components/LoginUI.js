@@ -4,8 +4,8 @@ import "./styles/style.css";
 import { useNavigate } from "react-router-dom";
 import { keyframes } from "styled-components";
 
-const LoginUI = ({ setMovies }) => {
-  const [username, setUsername] = useState("");
+const LoginUI = ({ setMovies, movies }) => {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useContext(Context);
   const [status, setStatus] = useState("");
@@ -25,8 +25,8 @@ const LoginUI = ({ setMovies }) => {
     localStorage.clear();
   }, []);
 
-  const handleUsername = (e) => {
-    setUsername(e.target.value);
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
   };
 
   const handlePassword = (e) => {
@@ -34,13 +34,13 @@ const LoginUI = ({ setMovies }) => {
   };
 
   const handleRegister = () => {
-    navigate(`/user/register`);
+    navigate(`/register`);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const user = {
-      username,
+      email,
       password,
     };
     const opts = {
@@ -54,7 +54,7 @@ const LoginUI = ({ setMovies }) => {
     async function loginUser() {
       try {
         const loginResponse = await fetch(
-          "http://localhost:4000/user/login",
+          "https://rich-wasp-capris.cyclic.app/login",
           opts
         );
         const data = await loginResponse.json();
@@ -62,17 +62,21 @@ const LoginUI = ({ setMovies }) => {
 
         if (loginResponse.status === 200) {
           setLoggedIn(true);
-          localStorage.setItem("token", data.data.token);
-          localStorage.setItem("username", data.data.username);
-          localStorage.setItem("userId", data.data.userId);
+          localStorage.setItem("token", data.token);
+          const token = localStorage.getItem('token')
+          localStorage.setItem("userId", data.user.userId);
 
-          let userId = data.data.userId;
+          let userId = data.user.userId;
           const moviesResponse = await fetch(
-            `http://localhost:4000/movie/${userId}`
+            `https://rich-wasp-capris.cyclic.app/movie`, {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            }
           );
           const moviesData = await moviesResponse.json();
-          setMovies(moviesData.movies);
-          navigate(`/main/${userId}`);
+          setMovies(moviesData);
+          navigate(`/main`);
         } else if (loginResponse.status === 404) {
           setFailed(true);
           setRed("red");
@@ -109,18 +113,18 @@ const LoginUI = ({ setMovies }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="formy">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="email">Email</label>
             <input
               style={{
                 color: `${red}`,
                 animation: `${shake}`,
               }}
               type="text"
-              id="username"
-              placeholder="username"
+              id="email"
+              placeholder="email"
               required
-              value={username}
-              onChange={handleUsername}
+              value={email}
+              onChange={handleEmail}
             />
             <label htmlFor="password">Password</label>
             <input
@@ -135,14 +139,10 @@ const LoginUI = ({ setMovies }) => {
               value={password}
               onChange={handlePassword}
             />
-            {failed && (
-              <div className="error">
-                The username you have entered is not associated with an account.
-              </div>
-            )}
+
             {!failed && !wrong && <div></div>}
             {!failed && wrong && (
-              <div className="error">You have entered an invalid username or password</div>
+              <div className="error">You have entered an invalid email or password</div>
             )}
 
             <button className="log-but" type="submit">
