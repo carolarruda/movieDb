@@ -7,8 +7,6 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import classes from "./Sign.module.css";
 
-
-
 const Login = ({ setMovies, movies }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -85,15 +83,16 @@ const Login = ({ setMovies, movies }) => {
         if (loginResponse.status === 200) {
           setLoggedIn(true);
           localStorage.setItem("token", data.token);
-          const token = localStorage.getItem('token')
+          const token = localStorage.getItem("token");
           localStorage.setItem("userId", data.user.userId);
 
           let userId = data.user.userId;
           const moviesResponse = await fetch(
-            `https://rich-wasp-capris.cyclic.app/movie`, {
+            `https://rich-wasp-capris.cyclic.app/movie`,
+            {
               headers: {
-                Authorization: `Bearer ${token}`
-              }
+                Authorization: `Bearer ${token}`,
+              },
             }
           );
           const moviesData = await moviesResponse.json();
@@ -125,16 +124,20 @@ const Login = ({ setMovies, movies }) => {
   return (
     <div className={classes.background}>
       <div className={classes.formContainer}>
-        <h1>Sign in</h1>
+        <h1 className={classes.titleForm}>
+          <span className={classes.active}> Login</span> | <span className={classes}>Signup</span>
+        </h1>
         <div className={classes.register}>
-          <p className={classes.undertext}>Don't have an account?</p>
-          <button className={classes.sign} onClick={handleRegister}>
-            Sign up
-          </button>
+          
+          <p className={classes.undertext}>Login to access your account</p>
+
         </div>
 
-        <form className={`${classes.formy} ${classes.log}`} onSubmit={handleSubmit}>
-          <label htmlFor="username">Email</label>
+        <form
+          className={`${classes.formy} ${classes.log}`}
+          onSubmit={handleSubmit}
+        >
+          <label htmlFor="username"></label>
           <input
             style={{
               color: `${red}`,
@@ -142,12 +145,12 @@ const Login = ({ setMovies, movies }) => {
             }}
             type="text"
             id="username"
-            placeholder="email"
+            placeholder="Email Address"
             required
             value={email}
             onChange={handleEmail}
           />
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password"></label>
           <input
             style={{
               color: `${redTwo}`,
@@ -155,19 +158,21 @@ const Login = ({ setMovies, movies }) => {
             }}
             type="password"
             id="password"
-            placeholder="password"
+            placeholder="Password"
             required
             value={password}
             onChange={handlePassword}
           />
           {!failed && !wrong && <div></div>}
           {failed && wrong && (
-            <div className={classes.error}>Invalid email and/or password provided</div>
+            <div className={classes.error}>
+              Invalid email and/or password provided
+            </div>
           )}
           <button className={classes.logBut} type="submit">
             Sign In
           </button>
-          <Copyright sx={{ mt: 5 }} />
+          <Copyright sx={{ mt: 5, color: "white" }} />
         </form>
       </div>
     </div>
